@@ -115,156 +115,160 @@ function Recipes() {
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Left Panel - FullRecipe */}
-      <div
-        className={`transition-all duration-300 ease-in-out ${
-          activeRecipe
-            ? "w-1/3 opacity-100 translate-x-0"
-            : "w-0 opacity-0 -translate-x-full"
-        } overflow-hidden bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 shadow-lg`}
-      >
-        {activeRecipe && (
-          <div className="h-full overflow-y-auto">
-            <div className="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-4 flex justify-between items-center">
-              <h2 className="text-lg font-bold">Full Recipe</h2>
-              <button
-                onClick={closePanels}
-                className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors"
-              >
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+    <div className="h-screen overflow-hidden bg-gray-50 dark:bg-gray-900">
+      <div className="flex h-full">
+        {/* Left Panel - FullRecipe */}
+        <div
+          className={`transition-all duration-300 ease-in-out ${
+            activeRecipe
+              ? "w-1/3 opacity-100 translate-x-0"
+              : "w-0 opacity-0 -translate-x-full"
+          } overflow-hidden bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 shadow-lg`}
+        >
+          {activeRecipe && (
+            <div className="h-full overflow-y-auto">
+              <div className="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-4 flex justify-between items-center">
+                <h2 className="text-lg font-bold">Full Recipe</h2>
+                <button
+                  onClick={closePanels}
+                  className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-            </div>
-            <div className="p-4">
-              <FullRecipe
-                hit={{
-                  img_src: activeRecipe.img_src,
-                  recipe_name: activeRecipe.recipe_name,
-                  directions: activeRecipe.directions,
-                  total_time: activeRecipe.total_time,
-                  ingredients: activeRecipe.ingredients,
-                  nutrition: activeRecipe.nutrition,
-                  servings: activeRecipe.servings,
-                }}
-              />
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Center Panel - Main Content */}
-      <div className="flex-1 transition-all duration-300 ease-in-out">
-        <div className="container mx-auto px-4 py-6 max-w-none">
-          <InstantSearch
-            searchClient={searchClient}
-            indexName="recipes"
-          >
-            <Configure hitsPerPage={12} />
-
-            <div className="mb-6">
-              <div className="flex items-center justify-between mb-4">
-                <h1 className="text-3xl font-bold">Recipe Search</h1>
-                {activeRecipe && (
-                  <button
-                    onClick={closePanels}
-                    className="px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-lg transition-colors"
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
                   >
-                    Close Details
-                  </button>
-                )}
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
               </div>
-              <SearchBox
-                classNames={{
-                  root: "mb-4",
-                  form: "relative",
-                  input:
-                    "w-full px-4 py-2 border border-input rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
-                  submit: "absolute right-3 top-1/2 transform -translate-y-1/2",
-                  reset: "absolute right-12 top-1/2 transform -translate-y-1/2",
-                }}
-              />
+              <div className="p-4">
+                <FullRecipe
+                  hit={{
+                    img_src: activeRecipe.img_src,
+                    recipe_name: activeRecipe.recipe_name,
+                    directions: activeRecipe.directions,
+                    total_time: activeRecipe.total_time,
+                    ingredients: activeRecipe.ingredients,
+                    nutrition: activeRecipe.nutrition,
+                    servings: activeRecipe.servings,
+                  }}
+                />
+              </div>
             </div>
-
-            <div className="mb-8">
-              <Hits
-                hitComponent={Hit}
-                classNames={{
-                  list: `grid gap-6 mb-8 list-none p-0 ${
-                    activeRecipe
-                      ? "grid-cols-2 lg:grid-cols-2"
-                      : "grid-cols-2 lg:grid-cols-4"
-                  }`,
-                  item: "h-full w-full flex block",
-                }}
-              />
-            </div>
-
-            <div className="flex justify-center">
-              <Pagination
-                classNames={{
-                  root: "flex items-center space-x-2",
-                  list: "flex items-center space-x-1",
-                  item: "inline-flex items-center justify-center w-10 h-10 rounded-md border border-input bg-background hover:bg-accent hover:text-accent-foreground",
-                  link: "w-full h-full flex items-center justify-center text-sm font-medium",
-                  selectedItem:
-                    "bg-primary text-primary-foreground hover:bg-primary/90",
-                  disabledItem:
-                    "opacity-50 cursor-not-allowed hover:bg-background",
-                }}
-              />
-            </div>
-          </InstantSearch>
+          )}
         </div>
-      </div>
 
-      {/* Right Panel - ChatBox */}
-      <div
-        className={`transition-all duration-300 ease-in-out ${
-          activeRecipe
-            ? "w-1/3 opacity-100 translate-x-0"
-            : "w-0 opacity-0 translate-x-full"
-        } overflow-hidden bg-white dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700 shadow-lg`}
-      >
-        {activeRecipe && (
-          <div className="h-full overflow-y-auto">
-            <div className="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-4 flex justify-between items-center">
-              <h2 className="text-lg font-bold">Recipe Chat</h2>
-              <button
-                onClick={closePanels}
-                className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors"
-              >
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-            </div>
-            <div className="p-4">
-              <ChatBox />
-            </div>
+        {/* Center Panel - Main Content */}
+        <div className="flex-1 h-full overflow-y-auto transition-all duration-300 ease-in-out">
+          <div className="px-4 py-6">
+            <InstantSearch
+              searchClient={searchClient}
+              indexName="recipes"
+            >
+              <Configure hitsPerPage={12} />
+
+              <div className="mb-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h1 className="text-3xl font-bold">Recipe Search</h1>
+                  {activeRecipe && (
+                    <button
+                      onClick={closePanels}
+                      className="px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-lg transition-colors"
+                    >
+                      Close Details
+                    </button>
+                  )}
+                </div>
+                <SearchBox
+                  classNames={{
+                    root: "mb-4",
+                    form: "relative",
+                    input:
+                      "w-full px-4 py-2 border border-input rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+                    submit:
+                      "absolute right-3 top-1/2 transform -translate-y-1/2",
+                    reset:
+                      "absolute right-12 top-1/2 transform -translate-y-1/2",
+                  }}
+                />
+              </div>
+
+              <div className="mb-8">
+                <Hits
+                  hitComponent={Hit}
+                  classNames={{
+                    list: `grid gap-6 mb-8 list-none p-0 ${
+                      activeRecipe
+                        ? "grid-cols-2 lg:grid-cols-2"
+                        : "grid-cols-2 lg:grid-cols-4"
+                    }`,
+                    item: "h-full w-full flex block",
+                  }}
+                />
+              </div>
+
+              <div className="flex justify-center">
+                <Pagination
+                  classNames={{
+                    root: "flex items-center space-x-2",
+                    list: "flex items-center space-x-1",
+                    item: "inline-flex items-center justify-center w-10 h-10 rounded-md border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+                    link: "w-full h-full flex items-center justify-center text-sm font-medium",
+                    selectedItem:
+                      "bg-primary text-primary-foreground hover:bg-primary/90",
+                    disabledItem:
+                      "opacity-50 cursor-not-allowed hover:bg-background",
+                  }}
+                />
+              </div>
+            </InstantSearch>
           </div>
-        )}
+        </div>
+
+        {/* Right Panel - ChatBox */}
+        <div
+          className={`transition-all duration-300 ease-in-out ${
+            activeRecipe
+              ? "w-1/3 opacity-100 translate-x-0"
+              : "w-0 opacity-0 translate-x-full"
+          } overflow-hidden bg-white dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700 shadow-lg`}
+        >
+          {activeRecipe && (
+            <div className="h-full overflow-y-auto">
+              <div className="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-4 flex justify-between items-center">
+                <h2 className="text-lg font-bold">Recipe Chat</h2>
+                <button
+                  onClick={closePanels}
+                  className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors"
+                >
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <div className="p-4">
+                <ChatBox />
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
