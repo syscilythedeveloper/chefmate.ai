@@ -11,6 +11,12 @@
   "dependencies": {
     "@ai-sdk/openai": "^1.3.22",
     "@ai-sdk/react": "^1.2.12",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@google/generative-ai": "^0.24.1",
+    "@headlessui/react": "^2.2.4",
+    "@heroicons/react": "^2.2.0",
+    "@mui/material": "^7.1.1",
     "ai": "^4.3.16",
     "algoliasearch": "^5.27.0",
     "class-variance-authority": "^0.7.1",
@@ -19,7 +25,9 @@
     "next": "15.3.3",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-icons": "^5.5.0",
     "react-instantsearch": "^7.15.8",
+    "react-type-animation": "^3.2.0",
     "tailwind-merge": "^3.3.1",
     "zod": "^3.25.57"
   },

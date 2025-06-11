@@ -90,7 +90,7 @@ function Recipes() {
         <CardFooter className="pt-2">
           <div className="flex gap-2 w-full">
             <button
-              className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-base font-semibold rounded-lg shadow transition-colors duration-200 flex items-center justify-center gap-2 border border-blue-700"
+              className="flex-1 px-4 py-2 bg-gradient-to-r from-[#fa8072] to-[#e9967a] hover:from-[#e9967a] hover:to-[#fa8072] text-white text-base font-semibold rounded-lg shadow transition-all duration-300 flex items-center justify-center gap-2 border border-transparent"
               onClick={() => handleRecipeClick(hit)}
             >
               <svg
@@ -264,7 +264,16 @@ function Recipes() {
                 </button>
               </div>
               <div className="p-4">
-                <ChatBox />
+                <ChatBox
+                  hit={{
+                    recipe_name: activeRecipe.recipe_name,
+                    directions: activeRecipe.directions,
+                    total_time: activeRecipe.total_time,
+                    ingredients: activeRecipe.ingredients,
+                    nutrition: activeRecipe.nutrition,
+                    servings: activeRecipe.servings,
+                  }}
+                />
               </div>
             </div>
           )}
