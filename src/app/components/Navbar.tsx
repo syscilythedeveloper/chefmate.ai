@@ -63,7 +63,7 @@ export default function ChefmateNavbar() {
                   mate
                 </span>
                 <span className="text-gray-300 ml-1 text-lg font-medium">
-                  AI
+                  .ai
                 </span>
               </div>
               <div className="text-xs text-gray-400 font-medium tracking-wide">

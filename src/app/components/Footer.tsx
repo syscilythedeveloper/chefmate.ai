@@ -57,7 +57,7 @@ export default function ChefmateFooter() {
                 <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
                   mate
                 </span>
-                <span className="text-gray-300 ml-1 font-medium">AI</span>
+                <span className="text-gray-300 ml-1 font-medium">.ai</span>
               </div>
             </div>
 
@@ -67,7 +67,7 @@ export default function ChefmateFooter() {
             </p>
 
             <p className="text-gray-500 text-xs">
-              © 2025 ChefmateAI. All rights reserved.
+              © 2025 Chefmate.ai All rights reserved.
             </p>
           </div>
 
