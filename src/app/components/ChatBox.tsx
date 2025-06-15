@@ -152,7 +152,7 @@ const ChatBox = ({ hit }: ChatBoxProps) => {
           ></Stack>
         </Stack>
       </Box>
-      <div className="flex items-center gap-2 p-4 bg-white border-t border-gray-200">
+      <div className="absolute bottom-5 w-full flex items-center flex-end gap-2 p-4 bg-white border-t border-gray-200">
         <TextField
           label="Message"
           fullWidth
