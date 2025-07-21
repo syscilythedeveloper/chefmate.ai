@@ -49,12 +49,24 @@ function Recipes() {
   const [activeRecipe, setActiveRecipe] = useState<HitProps["hit"] | null>(
     null
   );
-  const [activeTab, setActiveTab] = useState<"details" | "chat">("details");
 
   const handleRecipeClick = (hit: any) => {
     setActiveRecipe(hit);
-    setActiveTab("details");
     console.log("Recipe clicked:", hit.recipe_name, "activeRecipe", hit);
+
+    // Scroll the clicked card into view if it's not visible
+    setTimeout(() => {
+      const activeCard = document.querySelector(
+        `[data-recipe-name="${hit.recipe_name}"]`
+      );
+      if (activeCard) {
+        activeCard.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+          inline: "nearest",
+        });
+      }
+    }, 300); // Small delay to allow layout changes
   };
 
   const closePanels = () => {
@@ -62,8 +74,18 @@ function Recipes() {
   };
 
   function Hit({ hit }: HitProps) {
+    const isActive =
+      activeRecipe && hit.recipe_name === activeRecipe.recipe_name;
+
     return (
-      <Card className="h-full w-full flex flex-col overflow-hidden hover:shadow-lg transition-shadow duration-200">
+      <Card
+        data-recipe-name={hit.recipe_name}
+        className={`h-full w-full flex flex-col overflow-hidden hover:shadow-lg transition-all duration-200 ${
+          isActive
+            ? "bg-blue-50 border-2 border-blue-400 shadow-lg ring-2 ring-blue-200"
+            : "bg-red-50 hover:bg-red-100"
+        }`}
+      >
         <div className="relative h-48 overflow-hidden">
           <img
             src={hit.img_src}
@@ -72,6 +94,11 @@ function Recipes() {
             alt={hit.recipe_name || "Recipe"}
             className="w-full h-full object-cover"
           />
+          {isActive && (
+            <div className="absolute top-2 left-2 bg-blue-500 text-white px-2 py-1 rounded-full text-xs font-semibold">
+              Selected
+            </div>
+          )}
         </div>
 
         <CardHeader className="pb-2">
@@ -92,7 +119,11 @@ function Recipes() {
         <CardFooter className="pt-2">
           <div className="flex gap-2 w-full">
             <button
-              className="flex-1 px-4 py-2 bg-gradient-to-r from-[#fa8072] to-[#e9967a] hover:from-[#e9967a] hover:to-[#fa8072] text-white text-base font-semibold rounded-lg shadow transition-all duration-300 flex items-center justify-center gap-2 border border-transparent"
+              className={`flex-1 px-4 py-2 text-white text-base font-semibold rounded-lg shadow transition-all duration-300 flex items-center justify-center gap-2 border border-transparent ${
+                isActive
+                  ? "bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
+                  : "bg-gradient-to-r from-[#fa8072] to-[#e9967a] hover:from-[#e9967a] hover:to-[#fa8072]"
+              }`}
               onClick={() => handleRecipeClick(hit)}
             >
               <svg
@@ -108,7 +139,7 @@ function Recipes() {
                   d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              Explore Recipe
+              {isActive ? "Currently Viewing" : "Explore Recipe"}
             </button>
           </div>
         </CardFooter>
@@ -119,11 +150,66 @@ function Recipes() {
   return (
     <div className="h-screen overflow-hidden bg-gray-50 dark:bg-gray-900">
       <div className="flex h-full">
-        {/* Center Panel - Main Content */}
+        {/* Left Panel - Recipe Details */}
         <div
-          className={`h-full overflow-y-auto transition-all duration-300 ease-in-out ${
-            activeRecipe ? "flex-1" : "w-full"
-          }`}
+          className={`transition-all duration-300 ease-in-out ${
+            activeRecipe
+              ? "w-1/3 opacity-100 translate-x-0"
+              : "w-0 opacity-0 -translate-x-full"
+          } overflow-hidden bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 shadow-lg flex flex-col`}
+        >
+          {activeRecipe && (
+            <>
+              {/* Header */}
+              <div className="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-4 flex justify-between items-center">
+                <h2 className="text-lg font-bold truncate">
+                  {activeRecipe.recipe_name || "Recipe Details"}
+                </h2>
+                <button
+                  onClick={closePanels}
+                  className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors"
+                >
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </div>
+
+              {/* Recipe Details */}
+              <div className="flex-1 overflow-y-auto">
+                <div className="p-4">
+                  <FullRecipe
+                    hit={{
+                      img_src: activeRecipe.img_src,
+                      recipe_name: activeRecipe.recipe_name,
+                      directions: activeRecipe.directions,
+                      total_time: activeRecipe.total_time,
+                      ingredients: activeRecipe.ingredients,
+                      nutrition: activeRecipe.nutrition,
+                      servings: activeRecipe.servings,
+                    }}
+                  />
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+
+        {/* Center Panel - Recipe Search and Grid */}
+        <div
+          className={`transition-all duration-300 ease-in-out ${
+            activeRecipe ? "w-1/3" : "w-full"
+          } h-full overflow-y-auto border-r border-gray-200 dark:border-gray-700`}
         >
           <div className="px-4 py-6">
             <InstantSearch
@@ -134,7 +220,6 @@ function Recipes() {
 
               <div className="mb-6">
                 <div className="flex items-center justify-between mb-4">
-                  <h1 className="text-3xl font-bold">Recipe Search</h1>
                   {activeRecipe && (
                     <button
                       onClick={closePanels}
@@ -145,6 +230,7 @@ function Recipes() {
                   )}
                 </div>
                 <SearchBox
+                  placeholder="Search for recipes... (e.g., 'chicken pasta', 'vegetarian', 'quick dinner')"
                   classNames={{
                     root: "mb-4",
                     form: "relative",
@@ -162,10 +248,10 @@ function Recipes() {
                 <Hits
                   hitComponent={Hit}
                   classNames={{
-                    list: `grid gap-6 mb-8 list-none p-0 ${
+                    list: `grid gap-4 mb-8 list-none p-0 ${
                       activeRecipe
-                        ? "grid-cols-2 lg:grid-cols-2"
-                        : "grid-cols-2 lg:grid-cols-4"
+                        ? "grid-cols-1 xl:grid-cols-2"
+                        : "grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
                     }`,
                     item: "h-full w-full flex block",
                   }}
@@ -190,97 +276,51 @@ function Recipes() {
           </div>
         </div>
 
-        {/* Right Panel - Tabbed Detail View */}
+        {/* Right Panel - AI Chat */}
         <div
           className={`transition-all duration-300 ease-in-out ${
             activeRecipe
-              ? "w-1/2 opacity-100 translate-x-0"
+              ? "w-1/3 opacity-100 translate-x-0"
               : "w-0 opacity-0 translate-x-full"
-          } overflow-hidden bg-white dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700 shadow-lg flex flex-col`}
+          } overflow-hidden bg-blue-50/50 dark:bg-blue-900/20 shadow-lg flex flex-col`}
         >
           {activeRecipe && (
             <>
-              {/* Header with tabs */}
-              <div className="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-                <div className="flex justify-between items-center p-4 border-b border-gray-100 dark:border-gray-600">
-                  <h2 className="text-lg font-bold truncate">
-                    {activeRecipe.recipe_name || "Recipe Details"}
-                  </h2>
-                  <button
-                    onClick={closePanels}
-                    className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors"
+              {/* Chat Header */}
+              <div className="sticky top-0 bg-blue-100 dark:bg-blue-900/40 border-b border-blue-200 dark:border-blue-700 p-4">
+                <div className="flex items-center gap-3">
+                  <svg
+                    className="w-5 h-5 text-blue-500"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
                   >
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
-                  </button>
+                    <path
+                      fillRule="evenodd"
+                      d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <h3 className="text-lg font-bold text-gray-800 dark:text-gray-200">
+                    Chat with AI
+                  </h3>
                 </div>
-
-                {/* Tabs */}
-                <div className="flex">
-                  <button
-                    onClick={() => setActiveTab("details")}
-                    className={`flex-1 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
-                      activeTab === "details"
-                        ? "border-blue-500 text-blue-600 bg-blue-50 dark:bg-blue-900/20 dark:text-blue-400"
-                        : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300"
-                    }`}
-                  >
-                    Recipe Details
-                  </button>
-                  <button
-                    onClick={() => setActiveTab("chat")}
-                    className={`flex-1 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
-                      activeTab === "chat"
-                        ? "border-blue-500 text-blue-600 bg-blue-50 dark:bg-blue-900/20 dark:text-blue-400"
-                        : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300"
-                    }`}
-                  >
-                    AI Chat
-                  </button>
-                </div>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                  Ask questions about this recipe
+                </p>
               </div>
 
-              {/* Tab Content */}
-              <div className="flex-1 overflow-y-auto">
-                {activeTab === "details" ? (
-                  <div className="p-4">
-                    <FullRecipe
-                      hit={{
-                        img_src: activeRecipe.img_src,
-                        recipe_name: activeRecipe.recipe_name,
-                        directions: activeRecipe.directions,
-                        total_time: activeRecipe.total_time,
-                        ingredients: activeRecipe.ingredients,
-                        nutrition: activeRecipe.nutrition,
-                        servings: activeRecipe.servings,
-                      }}
-                    />
-                  </div>
-                ) : (
-                  <div className="h-full">
-                    <ChatBox
-                      hit={{
-                        recipe_name: activeRecipe.recipe_name,
-                        directions: activeRecipe.directions,
-                        total_time: activeRecipe.total_time,
-                        ingredients: activeRecipe.ingredients,
-                        nutrition: activeRecipe.nutrition,
-                        servings: activeRecipe.servings,
-                      }}
-                    />
-                  </div>
-                )}
+              {/* Chat Content */}
+              <div className="flex-1 overflow-hidden">
+                <ChatBox
+                  hit={{
+                    recipe_name: activeRecipe.recipe_name,
+                    directions: activeRecipe.directions,
+                    total_time: activeRecipe.total_time,
+                    ingredients: activeRecipe.ingredients,
+                    nutrition: activeRecipe.nutrition,
+                    servings: activeRecipe.servings,
+                  }}
+                />
               </div>
             </>
           )}

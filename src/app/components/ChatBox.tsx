@@ -28,6 +28,18 @@ const ChatBox = ({ hit }: ChatBoxProps) => {
   const [ellipsis, setEllipsis] = useState(".");
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  // Reset chat when recipe changes
+  useEffect(() => {
+    setMessages([
+      {
+        role: "assistant",
+        content: `How can I help you with ${hit.recipe_name}? I can provide cooking tips, suggest ingredient substitutions, explain techniques, or answer any questions about preparation and nutrition.`,
+      },
+    ]);
+    setMessage("");
+    setIsLoading(false);
+  }, [hit.recipe_name]);
+
   useEffect(() => {
     if (!isLoading) return;
     const interval = setInterval(() => {
@@ -87,7 +99,7 @@ const ChatBox = ({ hit }: ChatBoxProps) => {
   };
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col bg-stone-50/95 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg rounded-lg relative">
       <Box
         width="100%"
         height="100%"
