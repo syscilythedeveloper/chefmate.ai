@@ -114,7 +114,7 @@ export default function ChefmateFooter() {
               </li>
               <li>
                 <a
-                  href="https://medium.com/@syscily.brown"
+                  href="https://medium.com/@culturecoded.dev"
                   target="_blank"
                   className="text-gray-400 hover:text-white text-sm transition-colors duration-200"
                 >

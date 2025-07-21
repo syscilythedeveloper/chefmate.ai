@@ -3,9 +3,6 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 export async function POST(req: Request) {
   try {
     const data = await req.json();
-    //console.log("Received data:", data);
-    console.log("Recievid hit data:", data[2]);
-    //const hit = data[2];
     const hit = data[2].hit;
     //console.log("Hit data:", hit2);
     const recipe_name = hit.recipe_name || "Recipe";

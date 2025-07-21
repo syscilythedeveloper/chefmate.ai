@@ -28,11 +28,6 @@ const ChatBox = ({ hit }: ChatBoxProps) => {
   const [ellipsis, setEllipsis] = useState(".");
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // useEffect(() => {
-  //   messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  // }, [messages]);
-
-  // Animate ellipsis when loading
   useEffect(() => {
     if (!isLoading) return;
     const interval = setInterval(() => {

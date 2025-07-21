@@ -49,9 +49,11 @@ function Recipes() {
   const [activeRecipe, setActiveRecipe] = useState<HitProps["hit"] | null>(
     null
   );
+  const [activeTab, setActiveTab] = useState<"details" | "chat">("details");
 
   const handleRecipeClick = (hit: any) => {
     setActiveRecipe(hit);
+    setActiveTab("details");
     console.log("Recipe clicked:", hit.recipe_name, "activeRecipe", hit);
   };
 
@@ -117,56 +119,12 @@ function Recipes() {
   return (
     <div className="h-screen overflow-hidden bg-gray-50 dark:bg-gray-900">
       <div className="flex h-full">
-        {/* Left Panel - FullRecipe */}
-        <div
-          className={`transition-all duration-300 ease-in-out ${
-            activeRecipe
-              ? "w-1/3 opacity-100 translate-x-0"
-              : "w-0 opacity-0 -translate-x-full"
-          } overflow-hidden bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 shadow-lg`}
-        >
-          {activeRecipe && (
-            <div className="h-full overflow-y-auto">
-              <div className="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-4 flex justify-between items-center">
-                <h2 className="text-lg font-bold">Full Recipe</h2>
-                <button
-                  onClick={closePanels}
-                  className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors"
-                >
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                </button>
-              </div>
-              <div className="p-4">
-                <FullRecipe
-                  hit={{
-                    img_src: activeRecipe.img_src,
-                    recipe_name: activeRecipe.recipe_name,
-                    directions: activeRecipe.directions,
-                    total_time: activeRecipe.total_time,
-                    ingredients: activeRecipe.ingredients,
-                    nutrition: activeRecipe.nutrition,
-                    servings: activeRecipe.servings,
-                  }}
-                />
-              </div>
-            </div>
-          )}
-        </div>
-
         {/* Center Panel - Main Content */}
-        <div className="flex-1 h-full overflow-y-auto transition-all duration-300 ease-in-out">
+        <div
+          className={`h-full overflow-y-auto transition-all duration-300 ease-in-out ${
+            activeRecipe ? "flex-1" : "w-full"
+          }`}
+        >
           <div className="px-4 py-6">
             <InstantSearch
               searchClient={searchClient}
@@ -232,50 +190,99 @@ function Recipes() {
           </div>
         </div>
 
-        {/* Right Panel - ChatBox */}
+        {/* Right Panel - Tabbed Detail View */}
         <div
           className={`transition-all duration-300 ease-in-out ${
             activeRecipe
-              ? "w-1/3 opacity-100 translate-x-0"
+              ? "w-1/2 opacity-100 translate-x-0"
               : "w-0 opacity-0 translate-x-full"
-          } overflow-hidden bg-white dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700 shadow-lg`}
+          } overflow-hidden bg-white dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700 shadow-lg flex flex-col`}
         >
           {activeRecipe && (
-            <div className="h-full overflow-y-auto">
-              <div className="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-4 flex justify-between items-center">
-                <h2 className="text-lg font-bold">Recipe Chat</h2>
-                <button
-                  onClick={closePanels}
-                  className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors"
-                >
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
+            <>
+              {/* Header with tabs */}
+              <div className="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                <div className="flex justify-between items-center p-4 border-b border-gray-100 dark:border-gray-600">
+                  <h2 className="text-lg font-bold truncate">
+                    {activeRecipe.recipe_name || "Recipe Details"}
+                  </h2>
+                  <button
+                    onClick={closePanels}
+                    className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </button>
+                </div>
+
+                {/* Tabs */}
+                <div className="flex">
+                  <button
+                    onClick={() => setActiveTab("details")}
+                    className={`flex-1 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
+                      activeTab === "details"
+                        ? "border-blue-500 text-blue-600 bg-blue-50 dark:bg-blue-900/20 dark:text-blue-400"
+                        : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300"
+                    }`}
+                  >
+                    Recipe Details
+                  </button>
+                  <button
+                    onClick={() => setActiveTab("chat")}
+                    className={`flex-1 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
+                      activeTab === "chat"
+                        ? "border-blue-500 text-blue-600 bg-blue-50 dark:bg-blue-900/20 dark:text-blue-400"
+                        : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300"
+                    }`}
+                  >
+                    AI Chat
+                  </button>
+                </div>
+              </div>
+
+              {/* Tab Content */}
+              <div className="flex-1 overflow-y-auto">
+                {activeTab === "details" ? (
+                  <div className="p-4">
+                    <FullRecipe
+                      hit={{
+                        img_src: activeRecipe.img_src,
+                        recipe_name: activeRecipe.recipe_name,
+                        directions: activeRecipe.directions,
+                        total_time: activeRecipe.total_time,
+                        ingredients: activeRecipe.ingredients,
+                        nutrition: activeRecipe.nutrition,
+                        servings: activeRecipe.servings,
+                      }}
                     />
-                  </svg>
-                </button>
+                  </div>
+                ) : (
+                  <div className="h-full">
+                    <ChatBox
+                      hit={{
+                        recipe_name: activeRecipe.recipe_name,
+                        directions: activeRecipe.directions,
+                        total_time: activeRecipe.total_time,
+                        ingredients: activeRecipe.ingredients,
+                        nutrition: activeRecipe.nutrition,
+                        servings: activeRecipe.servings,
+                      }}
+                    />
+                  </div>
+                )}
               </div>
-              <div className="p-4">
-                <ChatBox
-                  hit={{
-                    recipe_name: activeRecipe.recipe_name,
-                    directions: activeRecipe.directions,
-                    total_time: activeRecipe.total_time,
-                    ingredients: activeRecipe.ingredients,
-                    nutrition: activeRecipe.nutrition,
-                    servings: activeRecipe.servings,
-                  }}
-                />
-              </div>
-            </div>
+            </>
           )}
         </div>
       </div>
