@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import React, { useState } from "react";
@@ -50,7 +49,7 @@ function Recipes() {
     null
   );
 
-  const handleRecipeClick = (hit: any) => {
+  const handleRecipeClick = (hit: HitProps["hit"]) => {
     setActiveRecipe(hit);
     console.log("Recipe clicked:", hit.recipe_name, "activeRecipe", hit);
 
