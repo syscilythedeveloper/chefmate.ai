@@ -148,7 +148,7 @@ function Recipes() {
   }
 
   return (
-    <div className="h-screen overflow-hidden bg-gray-50 dark:bg-gray-900">
+    <div className="h-screen overflow-hidden bg-gray-50 dark:bg-gray-900 p-10">
       <div className="flex h-full">
         {/* Left Panel - Recipe Details */}
         <div

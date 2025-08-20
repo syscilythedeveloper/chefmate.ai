@@ -27,6 +27,7 @@ const ChatBox = ({ hit }: ChatBoxProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [ellipsis, setEllipsis] = useState(".");
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   // Reset chat when recipe changes
   useEffect(() => {
@@ -39,7 +40,17 @@ const ChatBox = ({ hit }: ChatBoxProps) => {
     setMessage("");
     setIsLoading(false);
   }, [hit.recipe_name]);
-
+  useEffect(() => {
+    if (messagesContainerRef.current) {
+      // Small delay to ensure content is rendered before scrolling
+      setTimeout(() => {
+        if (messagesContainerRef.current) {
+          messagesContainerRef.current.scrollTop =
+            messagesContainerRef.current.scrollHeight;
+        }
+      }, 10);
+    }
+  }, [messages]);
   useEffect(() => {
     if (!isLoading) return;
     const interval = setInterval(() => {
@@ -120,6 +131,7 @@ const ChatBox = ({ hit }: ChatBoxProps) => {
         >
           <Stack
             direction="column"
+            ref={messagesContainerRef}
             spacing={2}
             flexGrow={1}
             width="100%"
