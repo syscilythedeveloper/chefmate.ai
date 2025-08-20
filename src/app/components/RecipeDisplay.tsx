@@ -218,7 +218,7 @@ function Recipes() {
             >
               <Configure hitsPerPage={12} />
 
-              <div className="mb-6">
+              <div className="mb-4">
                 <div className="flex items-center justify-between mb-4">
                   {activeRecipe && (
                     <button
@@ -236,10 +236,8 @@ function Recipes() {
                     form: "relative",
                     input:
                       "w-full px-4 py-2 border border-input rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
-                    submit:
-                      "absolute right-3 top-1/2 transform -translate-y-1/2",
-                    reset:
-                      "absolute right-12 top-1/2 transform -translate-y-1/2",
+                    submit: "hidden",
+                    reset: "hidden",
                   }}
                 />
               </div>
@@ -258,7 +256,7 @@ function Recipes() {
                 />
               </div>
 
-              <div className="flex justify-center">
+              <div className="flex justify-center sticky bottom-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 pb-5 mb-5 pt-5">
                 <Pagination
                   classNames={{
                     root: "flex items-center space-x-2",

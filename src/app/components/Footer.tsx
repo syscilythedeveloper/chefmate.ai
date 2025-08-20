@@ -85,7 +85,6 @@ export default function ChefmateFooter() {
                   AI Chat Assistant
                 </a>
               </li>
-
               <li>
                 <a className="text-gray-400 hover:text-white text-sm transition-colors duration-200">
                   Nutrition Analysis
@@ -99,38 +98,13 @@ export default function ChefmateFooter() {
             </ul>
           </div>
 
-          {/* Product Features */}
+          {/* Fun Community Corner */}
           <div>
-            <h3 className="text-white font-semibold mb-4">Features</h3>
-            <ul className="space-y-2">
-              <li>
-                <a
-                  href="https://linkedin.com/in/syscilybrown"
-                  target="_blank"
-                  className="text-gray-400 hover:text-white text-sm transition-colors duration-200"
-                >
-                  LinkedIn
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://medium.com/@culturecoded.dev"
-                  target="_blank"
-                  className="text-gray-400 hover:text-white text-sm transition-colors duration-200"
-                >
-                  Blog
-                </a>
-              </li>
-
-              <li>
-                <a
-                  href="https://syscily.com/"
-                  target="_blank"
-                  className="text-gray-400 hover:text-white text-sm transition-colors duration-200"
-                >
-                  Portfolio
-                </a>
-              </li>
+            <h3 className="text-white font-semibold mb-4">Chef’s Corner</h3>
+            <ul className="space-y-2 text-sm text-gray-400">
+              <li>🍳 Tip: Salt pasta water until it “tastes like the sea.”</li>
+              <li>🥕 Fun Fact: Carrots were originally purple, not orange!</li>
+              <li>🍋 Flavor Hack: A squeeze of lemon brightens any dish.</li>
             </ul>
           </div>
         </div>
