@@ -49,3 +49,7 @@ npm install
 # or
 yarn install
 ```
+
+### Live Demo
+
+https://chefmate-ai.vercel.app/
